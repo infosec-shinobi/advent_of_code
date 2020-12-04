@@ -1,6 +1,6 @@
 # --- Day 1: Report Repair ---
 
-Source: https://adventofcode.com/2020/day/1
+Source: [https://adventofcode.com/2020/day/1](https://adventofcode.com/2020/day/1)
 
 ## Part 1
 

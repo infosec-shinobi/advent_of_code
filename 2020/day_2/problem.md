@@ -1,6 +1,6 @@
 # --- Day 2: Password Philosophy ---
 
-Source: https://adventofcode.com/2020/day/2
+Source: [https://adventofcode.com/2020/day/2](https://adventofcode.com/2020/day/2)
 
 ## Part 1
 Your flight departs in a few days from the coastal airport; the easiest way down to the coast from here is via toboggan.
