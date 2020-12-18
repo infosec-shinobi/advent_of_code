@@ -1,5 +1,5 @@
-# https://adventofcode.com/2020/day/8
-# 
+# https://adventofcode.com/2020/day/17
+# --- Day 17: Conway Cubes ---
 
 def main():
     #open input file
