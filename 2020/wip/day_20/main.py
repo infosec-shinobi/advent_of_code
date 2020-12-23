@@ -1,5 +1,5 @@
-# https://adventofcode.com/2020/day/8
-# 
+# https://adventofcode.com/2020/day/20
+# --- Day 20: Jurassic Jigsaw ---
 
 def main():
     #open input file

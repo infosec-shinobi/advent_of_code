@@ -1,5 +1,5 @@
-# https://adventofcode.com/2020/day/8
-# 
+# https://adventofcode.com/2020/day/22
+# --- Day 22: Crab Combat ---
 
 def main():
     #open input file
