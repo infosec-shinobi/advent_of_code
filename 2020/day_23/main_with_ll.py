@@ -1,31 +1,46 @@
 # https://adventofcode.com/2020/day/23
 # --- Day 23: Crab Cups ---
 
+class Node:
+    def __init__(self, value):
+        self.value = value
+    
+    def set_next(self, next_node):
+        self.next = next_node
+    
+    def get_next(self):
+        return self.next
+    
+    def __repr__(self):
+        return f"Cup({self.value})"
+
 def shuffle_cups(cup_order, move_count, max_len, cur_cup, cur_cup_idx):
     """crab shuffles the cups"""
-    for move in range(1,move_count+1):
-        print(move)
-        if cur_cup_idx + 1 > max_len:
-            picked_cup_idx = [0,1,2]
-        elif cur_cup_idx + 2 > max_len:
-            picked_cup_idx = [cur_cup_idx + 1,0,1]
-        elif cur_cup_idx + 3 > max_len:
-            picked_cup_idx = [cur_cup_idx + 1, cur_cup_idx + 2, 0]
+
+    cup_dict = {}
+    prev_node = None
+    first_node = None
+    for idx, cup in enumerate(cup_order):
+        if idx == 0:
+            cup_dict[cup] = Node(cup)
+        elif idx == max_len:
+            cup_dict[cup] = Node(cup)
+            cup_dict[cup_order[prev_node]].set_next(cup)
+            cup_dict[cup].set_next(0)
         else:
-            picked_cup_idx = [cur_cup_idx + 1, cur_cup_idx + 2, cur_cup_idx + 3]
+            cup_dict[cup] = Node(cup)
+            cup_dict[cup_order[prev_node]].set_next(cup)
         
-        #print("="*80)
-        #print(f"Current cup index: {cur_cup_idx} len max: {max_len} picked cup index: {picked_cup_idx}")
-        #print("/"*80)
-        #print(f"Move num: {move}")
-        #print(f"Current Cup: {current_cup}")
-        #print(f"cups: {input_list}")
-        picked_up_cups = []
-        
-        for item in picked_cup_idx:
-            picked_up_cups.append(cup_order[item])
-        #print(f"PU Index: {picked_cup_idx}")
-        #print(f"pick up: {picked_up_cups}")
+        prev_node = idx
+
+    for move in range(1,move_count+1):
+        print("="*80)
+        print(f"Move {move} occuring!")
+        next_cup = cup_dict[cur_cup].get_next
+        print(next_cup)
+        sec_next_cup = cup_dict[next_cup].get_next
+        third_next_cup = cup_dict[sec_next_cup].get_next
+        fourth_next_cup = cup_dict[fourth_next_cup].get_next
         
         destination_cup = cur_cup - 1
         valid = False
@@ -36,32 +51,23 @@ def shuffle_cups(cup_order, move_count, max_len, cur_cup, cur_cup_idx):
                 valid = True
             else: 
                 destination_cup -= 1
-        
-        sorted_cup_inx = sorted(picked_cup_idx, reverse=True)
-        #picked_up_cups.reverse()
+        next_dest_cup = cup_dict[destination_cup].get_next
 
-        for item in sorted_cup_inx:
-            cup_order.pop(item)
-        
-        dest_cup_idx = cup_order.index(destination_cup) + 1
-        #print(f"Destination cup: {destination_cup} index: {dest_cup_idx}")
-
-        for cup_label in range(len(picked_up_cups)):
-            #print(cup_label)
-            #print(cup_order)
-            cup_order.insert(dest_cup_idx+cup_label,picked_up_cups[cup_label])
-
-        #print(cup_order)
-
-        cur_cup_idx = cup_order.index(cur_cup)
-
-        if cur_cup_idx == max_len:
-            cur_cup_idx = 0
-        else:
-            cur_cup_idx += 1
-
-        cur_cup = cup_order[cur_cup_idx]
-    return cup_order
+        cup_dict[cur_cup].set_next(fourth_next_cup)
+        cur_cup=fourth_next_cup
+        cup_dict[destination_cup].set_next(next_cup)
+        cup_dict[third_next_cup].set_next(next_dest_cup)
+    
+    lookup_cup = 1
+    while True:
+        final_order = []
+        temp_num = cup_dict[lookup_cup].get_next()
+        final_order.append(temp_num)
+        lookup_cup = temp_num
+        if lookup_cup == 1:
+            break
+    print(final_order)
+    #return cup_order
 
 def main():
     #open input file
@@ -102,7 +108,8 @@ def main():
     print(p1_final_string)
 
     # PART 2
-    part_2_list = input_list
+    # Need to implment Linked List because brute force is hella slow
+    '''part_2_list = input_list
     part_2_moves = 10000000
     for x in range(10,1000001):
         part_2_list.append(int(x))
@@ -117,6 +124,6 @@ def main():
     neighbor_1 = part_2_list[p2_cup_one_idx+1]
     neighbor_2 = part_2_list[p2_cup_one_idx+2]
     print(f"N1 is {neighbor_1}, N2 is {neighbor_2}, product of them is: {neighbor_1*neighbor_2}")
-    
+    '''
 if __name__ == "__main__":
     main()

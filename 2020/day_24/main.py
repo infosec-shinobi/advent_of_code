@@ -1,5 +1,5 @@
-# https://adventofcode.com/2020/day/8
-# 
+# https://adventofcode.com/2020/day/24
+# --- Day 24: Lobby Layout ---
 
 def main():
     #open input file
