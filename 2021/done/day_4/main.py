@@ -10,8 +10,7 @@ class BingoCard():
         self.columns = {1:[],2:[],3:[],4:[],5:[]}
         self.unhit_total = 0
         self.make_board(board_data)
-        
-    
+  
     def make_board(self, data):
         
         row = 1
@@ -25,8 +24,8 @@ class BingoCard():
                 self.columns[column].append(num)
                 column+=1
             row+=1
-        print(self.rows)
-        print(self.columns)
+        #print(self.rows)
+        #print(self.columns)
 
     def check_hit(self, drawn_num):
 
@@ -97,32 +96,51 @@ with open('input.txt') as f:
     bingo_card_name = BingoCard(temp_card, bingo_card_name)
     bingo_cards.append(bingo_card_name)
 
-#for item in bingo_cards:
-#    print(item)
-#    item.print_data()   
+bingo_tracker = {}
+
+for item in bingo_cards:
+    num_count = 0
+    for num in drawn_values:
+        num_count += 1
+        item.check_hit(num)
+        win_status, win_type, win_key, win_list, win_num, win_card, total_unhit = item.check_win(num)
+
+        if win_status:
+            win_product = 0
+            win_product = int(total_unhit)*int(win_num)
+            bingo_tracker[win_product] = num_count
+            break
+
+print(bingo_tracker)
+
+min_k = 0
+min_v = 0
+max_k = 0
+max_v = 0
+
+for k,v in bingo_tracker.items():
+    if min_v == 0:
+        min_k = k
+        min_v = v
+        max_k = k
+        max_v = v
+    if v < min_v :
+        min_v = v
+        min_k = k
+    elif v > max_v:
+        max_v = v
+        max_k = k
+    else:
+        continue
 
 ##########
 # Part 1 #
 ##########
 
-for num in drawn_values:
-    print(num)
-    for item in bingo_cards:
-        item.print_data()
-        item.check_hit(num)
-        win_status, win_type, win_key, win_list, win_num, win_card, total_unhit = item.check_win(num)
- 
-        if win_status:
-            break
-    if win_status:
-            break
-
-print(f'Total unhit: {total_unhit}')
-print(f"drawn num: {win_num}")
-win_product = 0
-win_product = int(total_unhit)*int(win_num)
-print(f"Part 1: Winning Card {win_card}, winning match {win_type} {win_key}, answer: {win_product}")
+print(f'Part 1: {min_k}')
 
 ##########
 # Part 2 #
 ##########
+
+print(f'Part 2: {max_k}')
