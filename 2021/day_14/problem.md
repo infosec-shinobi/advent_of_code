@@ -1,60 +1,55 @@
---- Day 9: Smoke Basin ---
-These caves seem to be lava tubes. Parts are even still volcanically active; small hydrothermal vents release smoke into the caves that slowly settles like rain.
+--- Day 14: Extended Polymerization ---
+The incredible pressures at this depth are starting to put a strain on your submarine. The submarine has polymerization equipment that would produce suitable materials to reinforce the submarine, and the nearby volcanically-active caves should even have the necessary input elements in sufficient quantities.
 
-If you can model how the smoke flows through the caves, you might be able to avoid it and be that much safer. The submarine generates a heightmap of the floor of the nearby caves for you (your puzzle input).
+The submarine manual contains instructions for finding the optimal polymer formula; specifically, it offers a polymer template and a list of pair insertion rules (your puzzle input). You just need to work out what polymer would result after repeating the pair insertion process a few times.
 
-Smoke flows to the lowest point of the area it's in. For example, consider the following heightmap:
+For example:
 
-2199943210
-3987894921
-9856789892
-8767896789
-9899965678
-Each number corresponds to the height of a particular location, where 9 is the highest and 0 is the lowest a location can be.
+NNCB
 
-Your first goal is to find the low points - the locations that are lower than any of its adjacent locations. Most locations have four adjacent locations (up, down, left, and right); locations on the edge or corner of the map have three or two adjacent locations, respectively. (Diagonal locations do not count as adjacent.)
+CH -> B
+HH -> N
+CB -> H
+NH -> C
+HB -> C
+HC -> B
+HN -> C
+NN -> C
+BH -> H
+NC -> B
+NB -> B
+BN -> B
+BB -> N
+BC -> B
+CC -> N
+CN -> C
+The first line is the polymer template - this is the starting point of the process.
 
-In the above example, there are four low points, all highlighted: two are in the first row (a 1 and a 0), one is in the third row (a 5), and one is in the bottom row (also a 5). All other locations on the heightmap have some lower adjacent location, and so are not low points.
+The following section defines the pair insertion rules. A rule like AB -> C means that when elements A and B are immediately adjacent, element C should be inserted between them. These insertions all happen simultaneously.
 
-The risk level of a low point is 1 plus its height. In the above example, the risk levels of the low points are 2, 1, 6, and 6. The sum of the risk levels of all low points in the heightmap is therefore 15.
+So, starting with the polymer template NNCB, the first step simultaneously considers all three pairs:
 
-Find all of the low points on your heightmap. What is the sum of the risk levels of all low points on your heightmap?
+The first pair (NN) matches the rule NN -> C, so element C is inserted between the first N and the second N.
+The second pair (NC) matches the rule NC -> B, so element B is inserted between the N and the C.
+The third pair (CB) matches the rule CB -> H, so element H is inserted between the C and the B.
+Note that these pairs overlap: the second element of one pair is the first element of the next pair. Also, because all pairs are considered simultaneously, inserted elements are not considered to be part of a pair until the next step.
+
+After the first step of this process, the polymer becomes NCNBCHB.
+
+Here are the results of a few steps using the above rules:
+
+Template:     NNCB
+After step 1: NCNBCHB
+After step 2: NBCCNBBBCBHCB
+After step 3: NBBBCNCCNBBNBNBBCHBHHBCHB
+After step 4: NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB
+This polymer grows quickly. After step 5, it has length 97; After step 10, it has length 3073. After step 10, B occurs 1749 times, C occurs 298 times, H occurs 161 times, and N occurs 865 times; taking the quantity of the most common element (B, 1749) and subtracting the quantity of the least common element (H, 161) produces 1749 - 161 = 1588.
+
+Apply 10 steps of pair insertion to the polymer template and find the most and least common elements in the result. What do you get if you take the quantity of the most common element and subtract the quantity of the least common element?
 
 --- Part Two ---
-Next, you need to find the largest basins so you know what areas are most important to avoid.
+The resulting polymer isn't nearly strong enough to reinforce the submarine. You'll need to run more steps of the pair insertion process; a total of 40 steps should do it.
 
-A basin is all locations that eventually flow downward to a single low point. Therefore, every low point has a basin, although some basins are very small. Locations of height 9 do not count as being in any basin, and all other locations will always be part of exactly one basin.
+In the above example, the most common element is B (occurring 2192039569602 times) and the least common element is H (occurring 3849876073 times); subtracting these produces 2188189693529.
 
-The size of a basin is the number of locations within the basin, including the low point. The example above has four basins.
-
-The top-left basin, size 3:
-
-2199943210
-3987894921
-9856789892
-8767896789
-9899965678
-The top-right basin, size 9:
-
-2199943210
-3987894921
-9856789892
-8767896789
-9899965678
-The middle basin, size 14:
-
-2199943210
-3987894921
-9856789892
-8767896789
-9899965678
-The bottom-right basin, size 9:
-
-2199943210
-3987894921
-9856789892
-8767896789
-9899965678
-Find the three largest basins and multiply their sizes together. In the above example, this is 9 * 14 * 9 = 1134.
-
-What do you get if you multiply together the sizes of the three largest basins?
+Apply 40 steps of pair insertion to the polymer template and find the most and least common elements in the result. What do you get if you take the quantity of the most common element and subtract the quantity of the least common element?
