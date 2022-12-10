@@ -71,4 +71,4 @@ print(f'Part 1: {total}')
 print(f'Part 2:')
 
 for line in crt:
-    print(line)
+    print("".join(line))
