@@ -19,28 +19,45 @@ def get_hand_strengths(list_of_cards):
     j = 0
     if "j" in count_of_cards:
         j = count_of_cards["j"]
-        j = count_of_cards.pop("j")
-        print(j)
-       
     
-    if max(count_of_cards.values()) == 5:
+    if max(count_of_cards.values()) == 5 or j == 5:
         strengths["5k"].append(list_of_cards)
-    elif max(count_of_cards.values()) == 4:
-        strengths["4k"].append(list_of_cards)
-    elif max(count_of_cards.values()) == 3:
+    elif max(count_of_cards.values()) == 4 or j == 4:
+        if j == 1 or j == 4:
+            strengths["5k"].append(list_of_cards)
+        else:
+            strengths["4k"].append(list_of_cards)
+    elif max(count_of_cards.values()) == 3 or j == 3:
         card_sets = set(count_of_cards)
         if len(card_sets) == 2:
-            strengths["fh"].append(list_of_cards)
-        else:
-            strengths["3k"].append(list_of_cards)
-    else:
+            if j > 0:
+                strengths["5k"].append(list_of_cards)
+            else:
+                strengths["fh"].append(list_of_cards)
+        else: #(3,1,1)
+            if j == 3 or j == 1:
+                strengths["4k"].append(list_of_cards)
+            else:
+                strengths["3k"].append(list_of_cards)
+    else: #2 j at most
         card_sets = set(count_of_cards)
         if len(card_sets) == 3:
-            strengths["2p"].append(list_of_cards)
+            if j == 2:
+                strengths["4k"].append(list_of_cards)
+            elif j == 1:
+                strengths["fh"].append(list_of_cards)
+            else:
+                strengths["2p"].append(list_of_cards)
         elif len(card_sets) == 4:
-            strengths["1p"].append(list_of_cards)
+            if j >0:
+                strengths["3k"].append(list_of_cards)
+            else:
+                strengths["1p"].append(list_of_cards)
         else:
-            strengths["other"].append(list_of_cards)
+            if j == 1:
+                strengths["1p"].append(list_of_cards)
+            else:
+                strengths["other"].append(list_of_cards)
 
 def determine_best_card(hand_old, hand_new):
     scores = {"a":100,"k":90,"q":80,"j":1,"t":60,"9":50,"8":40,"7":30,"6":20,"5":10,"4":5,"3":3,"2":2}
@@ -53,8 +70,8 @@ def determine_best_card(hand_old, hand_new):
         else:
             return True
 
-with open('ep1.txt') as f:
-#with open('i.txt') as f:
+#with open('ep2.txt') as f:
+with open('i.txt') as f:
     for line in f:
         line = line.strip()
         hand = line.split()
@@ -91,4 +108,4 @@ for key, value in strengths.items():
         total += add_value
         unprocesed_hands -= 1
 
-print(f'Part 1: {total}')
+print(f'Part 2: {total}')
