@@ -2,18 +2,6 @@ grid = []
 tracker = {}
 antinodes = set()
 
-def are_collinear(p1, p2, p3):
-
-    x1 = int(p1[0])
-    y1 = int(p1[1])
-    x2 = int(p2[0])
-    y2 = int(p2[1])
-    x3 = int(p3[0])
-    y3 = int(p3[1])
-    
-    # Using the slope method
-    return (y2 - y1) * (x3 - x2) == (y3 - y2) * (x2 - x1)
-
 def find_antinodes(max_cords, coord1, coord2):
     
     antinode1x = int(coord1[0]) - (int(coord2[0])-int(coord1[0]))
@@ -54,10 +42,8 @@ for freq, known_peers in tracker.items():
             if item != peer and peer not in checked_peers:
                 a1, a2 = find_antinodes(max_cords, item.split(","), peer.split(","))
                 if a1:
-                    are_collinear(item.split(","), peer.split(","), list(a1))
                     antinodes.add(a1)
                 if a2:
-                    are_collinear(item.split(","), peer.split(","), list(a2))
                     antinodes.add(a2)
             tracker[freq][peer].append(item)
   
